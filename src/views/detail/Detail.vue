@@ -53,7 +53,8 @@
         paramInfo: {},
         commentInfo: {},
         recommends: [],
-        themeTopYs: []
+        themeTopYs: [],
+        getThemeTopY: null
       }
     },
     created() {
@@ -85,7 +86,7 @@
           this.commentInfo = data.rate.list[0]
         }
 
-        this.$nextTick(() => {
+       /* this.$nextTick(() => {
           //值不对原因:图片没有计算在内
           //根据最新的数据，对应DOM已经被渲染出来
           //但图片没有加载完成
@@ -95,13 +96,23 @@
           this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
           this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
           console.log(this.themeTopYs);
-        })
+        })*/
       })
       //3.请求推荐数据
       getRecommend()
       {
         getRecommend().then(res => {
           this.recommends = res.data.list
+        })
+
+        //4.给getThemetypY赋值
+        this.getThemeTopY = decbounce(() => {
+          this.themeTopYs = []
+          this.themeTopYs.push(0);
+          this.themeTopYs.push(this.$refs.param.$el.offsetTop)
+          this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
+          this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
+          console.log(this.themeTopYs);
         })
       }
     },
@@ -110,12 +121,7 @@
         // this.$refs.scroll.refresh()
         // this.recommends = res.data.list
         this.$refs.scroll.refresh()
-
-        this.themeTopYs = []
-        this.themeTopY.push(0);
-        this.themeTopY.push(this.$refs.param.$el.offsetTop);
-        this.themeTopY.push(this.$refs.comment.$el.offsetTop);
-        this.themeTopY.push(this.$refs.recommend.$el.offsetTop);
+        this.getThemeTopY()
       },
       titleClick(index) {
         this.$refs.scroll.scrollTo(0,-this.themeTopYs[index], 100)
