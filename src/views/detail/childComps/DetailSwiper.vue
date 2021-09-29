@@ -31,5 +31,6 @@
 <style scoped>
   .swiper1 {
     height: 270px;
+    /*overflow: hidden;*/
   }
 </style>

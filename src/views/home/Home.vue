@@ -39,6 +39,7 @@
   import {getHomeMultidata} from "network/home";
   import {getHomeGoods} from "../../network/home";
   import {decbounce} from "common/utils";
+  import  {itemListenerMixin} from "../../common/mixin";
 
   export default {
     name: "Home",
@@ -52,6 +53,7 @@
       Scroll,
       BackTop
     },
+    mixins:[itemListenerMixin],
     data() {
       return {
         banners: [],
@@ -77,12 +79,14 @@
       console.log('home destroyed');
     },
     activated() {
-      console.log('activated');
       this.$refs.scroll.scrollTo(0, this.saveY, 0)
       this.$refs.scroll.refresh()
     },
     deactivated() {
+      //保存Y值
       this.saveY = this.$refs.scroll.getScrollY()
+      //取消全局事件的监听
+      this.$bus.$off('itemImgLoad', this.itemImgListener)
     },
     created() {
       // 1.请求多个数据
@@ -95,10 +99,11 @@
     },
     mounted() {
       //1.图片加载完成的事件监听
-      const  refresh = decbounce(this.$refs.scroll.refresh,100)
-      this.$bus.$on('itemImageLoad',() =>{
+/*      const  refresh = decbounce(this.$refs.scroll.refresh,100)
+      this.itemImgListener = () => {
         refresh()
-      })
+      }
+      this.$bus.$on('itemImageLoad', this.itemImgListener)*/
     },
     methods: {
       /*
@@ -123,11 +128,11 @@
         this.$refs.scroll.scroll.scrollTo (0, 0, 500)   /*最后一个参数 返回顶部时间*/
       },
       contentScroll (position) {
-        //1.判断backTop是否显示
+        //判断backTop是否显示
         //console.log(position);
         this.isShowBackTop = (-position.y) > 700
 
-        //2.决定tabControl是否吸顶
+        //决定tabControl是否吸顶
         this.isTabFixed = (-position.y) > this.tabOffsetTop
       },//滚动监听
       loadMore() {
