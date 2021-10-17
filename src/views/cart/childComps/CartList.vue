@@ -1,3 +1,4 @@
+<!--商品数据-->
 <template>
     <div class="clist">
       <scroll class="content" ref="scroll">

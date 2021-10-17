@@ -1,3 +1,4 @@
+<!--全选结算合计-->
 <template>
   <div class="bottom-bar">
     <div class="c" >
@@ -10,7 +11,7 @@
     <div class="price">
       合计:{{totalPrice}}
     </div>
-    <div class="clate">
+    <div class="clate" @click="cClick">
       结算:{{checkLength}}
     </div>
   </div>
@@ -59,6 +60,11 @@
             this.cartList.forEach(item =>item.checked = false)
           }else  {
             this.cartList.forEach(item =>item.checked = true)
+          }
+        },
+        cClick () {
+          if(!this.isAll) {
+            this.$toast('请选择购买商品')
           }
         }
       }

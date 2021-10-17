@@ -1,3 +1,4 @@
+<!--商品信息-->
 <template>
     <div id="shop-item">
      <div class="selector">

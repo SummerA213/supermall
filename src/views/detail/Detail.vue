@@ -1,3 +1,4 @@
+<!--详情页-->
 <template>
   <div id="detail">
     <detail-nav-bar class="detail-nav" @titleClick="titleClick" ref="nav"/>
@@ -12,7 +13,7 @@
     </scroll>
     <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"/> <!--加native可以监听组件-->
-    <toast></toast>
+    <!--<toast :message="message" :show="show"></toast>-->
   </div>
 </template>
 
@@ -29,7 +30,7 @@
   import Scroll from "../../components/common/scroll/Scroll";
   import GoodsList from "../../components/content/goods/GoodsList";
   import BackTop from "../../components/content/backTop/BackTop";
-  import Toast from "../../components/common/toast/Toast";
+  //import Toast from "../../components/common/toast/Toast";
 
   import {getDetail,Goods,Shop,GoodsParam, getRecommend} from "../../network/detail";
   import {decbounce} from "../../common/utils";
@@ -50,7 +51,7 @@
       GoodsList,
       DetailBottomBar,
       BackTop,
-      Toast
+      //Toast
     },
     data() {
       return {
@@ -65,7 +66,9 @@
         themeTopYs: [],
         getThemeTopY: null,
         currentIndex: 0,
-        isShowBackTop:false
+        isShowBackTop:false,
+        //message: '',
+        //show: false
       }
     },
     created() {
@@ -174,8 +177,13 @@
         //将商品添加到购物车
         //this.$store.commit('addCart',product)
         this.$store.dispatch('addCart', product).then(res => {
-          console.log(res);
-        })
+          // this.show = true
+          // this.message = res
+          // setTimeout(() => {
+          //   this.show = false
+          //   this.message = ''
+          this.$toast(res ,2000)
+          })
       }
     },
     mounted() {
